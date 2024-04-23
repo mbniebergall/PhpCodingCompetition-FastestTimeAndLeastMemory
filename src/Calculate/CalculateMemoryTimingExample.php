@@ -33,7 +33,7 @@ function getData(string $filename): \Generator
     fclose($handle);
 }
 
-foreach (getData('/home/jboctor/phptek/PhpCodingCompetition-FastestTimeAndLeastMemory/src/Password/Common/10-million-password-list-top-10000.txt') as $line) {
+foreach (getData('src/Password/Common/10-million-password-list-top-10000.txt') as $line) {
     $line = trim($line);
     $total_common_passwords++;
     $total_words += \str_word_count($line);
@@ -47,7 +47,7 @@ foreach (getData('/home/jboctor/phptek/PhpCodingCompetition-FastestTimeAndLeastM
     $maximum_common_password_length = \max($maximum_common_password_length, \strlen($line));
     $average_common_password_length += \strlen($line);
 
-    foreach (getData('/home/jboctor/phptek/PhpCodingCompetition-FastestTimeAndLeastMemory/src/Password/Common/words.txt') as $word) {
+    foreach (getData('src/Password/Common/10-million-password-list-top-10000.txt') as $word) {
         $word = trim($word);
         if (\strcasecmp($line, $word) === 0) {
             $common_passwords_that_match_case_insensitive_dictionary_words++;
