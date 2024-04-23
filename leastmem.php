@@ -13,15 +13,6 @@ echo 'Start Time: '. $startTime . PHP_EOL;
 
 // run code
 
-$words = file('src/Password/Common/words.txt', FILE_IGNORE_NEW_LINES);
-$wordMap = [];
-$wordMapLower = [];
-
-foreach ($words as $word) {
-    $wordMap[$word] = true;
-    $wordMapLower[strtolower($word)] = true;
-}
-
 $stats = new class {
     public int $wordCountNoCase = 0;
     public int $wordCountCase = 0;
@@ -40,14 +31,15 @@ $stats = new class {
 
 $fh = fopen('src/Password/Common/10-million-password-list-top-10000.txt', 'r');
 
-while ($password = fgets($fh)) {
-    $password = substr($password, 0, -1);
-
-    if (isset($wordMapLower[strtolower($password)])) {
-        $stats->wordCountNoCase++;
-    }
-    if (isset($wordMap[$password])) {
-        $stats->wordCountCase++;
+while ($password = stream_get_line($fh, 32, "\n")) {
+    $wordsFh = fopen('src/Password/Common/words.txt', 'r');
+    while ($word = stream_get_line($wordsFh, 32, "\n")) {
+        if (strtolower($password) === strtolower($word)) {
+            $stats->wordCountNoCase++;
+            if ($password === $word) {
+                $stats->wordCountCase++;
+            }
+        }
     }
 
     if (preg_replace('#[^a-zA-Z0-9]#', '', $password, 1) === $password) {
