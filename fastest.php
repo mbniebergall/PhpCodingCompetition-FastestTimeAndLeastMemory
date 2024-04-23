@@ -40,26 +40,31 @@ $stats = new class {
     public int $totalLength = 0;
 };
 
+$alnum = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+$alpha = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+$lower = 'abcdefghijklmnopqrstuvwxyz';
+$upper = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+$number = '0123456789';
+
 foreach ($passwords as $password) {
     if (isset($wordMapLower[strtolower($password)])) {
         $stats->wordCountNoCase++;
-    }
-    if (isset($wordMap[$password])) {
-        $stats->wordCountCase++;
+        if (isset($wordMap[$password])) {
+            $stats->wordCountCase++;
+        }
     }
 
-    if (preg_replace('#[^a-zA-Z0-9]#', '', $password, 1) === $password) {
+    if (strspn($password, $alnum) === strlen($password)) {
         $stats->onlyAlphanum++;
 
-
-        if (preg_replace('#[^a-zA-Z]#', '', $password, 1) === $password) {
+        if (strspn($password, $alpha) === strlen($password)) {
             $stats->onlyLetter++;
-            if (preg_replace('#[^a-z]#', '', $password, 1) === $password) {
+            if (strspn($password, $lower) === strlen($password)) {
                 $stats->onlyLower++;
-            } elseif (preg_replace('#[^A-Z]#', '', $password, 1) === $password) {
+            } else if (strspn($password, $upper) === strlen($password)) {
                 $stats->onlyUpper++;
             }
-        } elseif (preg_replace('#[^0-9]#', '', $password, 1) === $password) {
+        } else if (strspn($password, $number) === strlen($password)) {
             $stats->onlyNumber++;
         }
     } else {
