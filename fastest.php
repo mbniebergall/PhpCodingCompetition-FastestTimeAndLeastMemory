@@ -18,8 +18,8 @@ $wordMap = [];
 $wordMapLower = [];
 
 foreach ($words as $word) {
-    $wordMap[$word] = true;
-    $wordMapLower[strtolower($word)] = true;
+    $wordMap[$word[0]][$word] = true;
+    $wordMapLower[strtolower($word[0])][strtolower($word)] = true;
 }
 
 $passwords = file('src/Password/Common/10-million-password-list-top-10000.txt', FILE_IGNORE_NEW_LINES);
@@ -47,9 +47,9 @@ $upper = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 $number = '0123456789';
 
 foreach ($passwords as $password) {
-    if (isset($wordMapLower[strtolower($password)])) {
+    if (isset($wordMapLower[strtolower($password[0])][strtolower($password)])) {
         $stats->wordCountNoCase++;
-        if (isset($wordMap[$password])) {
+        if (isset($wordMap[$password[0]][$password])) {
             $stats->wordCountCase++;
         }
     }
