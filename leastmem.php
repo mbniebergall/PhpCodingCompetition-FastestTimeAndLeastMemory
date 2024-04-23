@@ -22,8 +22,6 @@ foreach ($words as $word) {
     $wordMapLower[strtolower($word)] = true;
 }
 
-$passwords = file('src/Password/Common/10-million-password-list-top-10000.txt', FILE_IGNORE_NEW_LINES);
-
 $stats = new class {
     public int $wordCountNoCase = 0;
     public int $wordCountCase = 0;
@@ -40,7 +38,11 @@ $stats = new class {
     public int $totalLength = 0;
 };
 
-foreach ($passwords as $password) {
+$fh = fopen('src/Password/Common/10-million-password-list-top-10000.txt', 'r');
+
+while ($password = fgets($fh)) {
+    $password = substr($password, 0, -1);
+
     if (isset($wordMapLower[strtolower($password)])) {
         $stats->wordCountNoCase++;
     }
@@ -84,7 +86,7 @@ echo 'Common Passwords that only contain alphanumeric characters: '.$stats->only
 echo 'Common Passwords that contain any non-alphanumeric characters: '.$stats->anyNonAlphaNum.PHP_EOL;
 echo 'Minimum Common Password Length: '.$stats->minimumLength.PHP_EOL;
 echo 'Maximum Common Password Length: '.$stats->maximumLength.PHP_EOL;
-echo 'Average Common Password Length: '.round($stats->totalLength / count($passwords), 1, PHP_ROUND_HALF_DOWN).PHP_EOL;
+echo 'Average Common Password Length: '.round($stats->totalLength / 10_000, 1, PHP_ROUND_HALF_DOWN).PHP_EOL;
 
 
 $endDatetime = date('Y-m-d H:i:s');
