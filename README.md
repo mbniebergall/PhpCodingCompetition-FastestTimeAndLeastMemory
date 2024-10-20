@@ -33,7 +33,7 @@ $totalMemoryUsed = memory_get_peak_usage() - $startingMemory;
 echo 'Peak Memory: ' . memory_get_peak_usage() . PHP_EOL;
 echo 'Memory Used: ' . $totalMemoryUsed . PHP_EOL;
 ```
-- 10k most common passwords file: https://github.com/danielmiessler/SecLists/blob/master/Passwords/Common-Credentials/10-million-password-list-top-10000.txt
+- 100k most common passwords file: https://github.com/danielmiessler/SecLists/blob/master/Passwords/Common-Credentials/10-million-password-list-top-100000.txt
 - ~466k English words: https://github.com/dwyl/english-words/blob/master/words.txt
 - Complete analysis of common passwords, replacing all `<...>` with correct value:
 ```txt
